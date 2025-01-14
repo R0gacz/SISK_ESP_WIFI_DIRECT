@@ -2,8 +2,8 @@
 
 WiFiClient client;
 
-const char* ssid = "ESP32_P2P_SERVER"; // Server SSID
-const char* host = "192.168.4.1";      // Default AP IP address for ESP32
+const char* ssid = //TODO 
+const char* host = //TODO     // Default AP IP address for ESP32
 const int port = 1234;                 // Same port as the server
 
 void setup() {
@@ -14,14 +14,14 @@ void setup() {
   WiFi.begin(ssid);
   
   Serial.print("Connecting to Server...");
-  while (WiFi.status() != WL_CONNECTED) {
+  while (/*TODO check if wifi status != connected*/) {
     delay(500);
     Serial.print(".");
   }
   Serial.println("\nConnected!");
 
   Serial.print("Client IP Address: ");
-  Serial.println(WiFi.localIP());
+  //TODO print local IP to serial
   
   if (client.connect(host, port)) {
     Serial.println("Connected to Server!");
@@ -32,7 +32,7 @@ void setup() {
 }
 
 void loop() {
-  if (client.connected()) {
+  if (/*TODO chceck if client is connected*/) {
     while (client.available()) {
       String received = client.readStringUntil('\n');
       Serial.print("Received: ");
@@ -43,7 +43,7 @@ void loop() {
     static unsigned long lastSendTime = 0;
     if (millis() - lastSendTime > 2000) {
       lastSendTime = millis();
-      client.println("Message from Client: " + String(millis()));
+      //TODO send message to WIFI server
     }
   } else {
     Serial.println("Disconnected from server. Reconnecting...");
