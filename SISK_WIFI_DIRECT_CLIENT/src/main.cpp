@@ -1,31 +1,35 @@
 #include <WiFi.h>
+const int buttonPin = 0; 
 
 WiFiClient client;
 
-const char* ssid = //TODO 
-const char* host = //TODO     // Default AP IP address for ESP32
-const int port = 1234;                 // Same port as the server
+const char* ssid = NULL;//TODO 
+const char* password = NULL;//TODO  
+IPAddress hostIp = nullptr;//TODO
+int port= NULL;//TODO
 
 void setup() {
   Serial.begin(115200);
+  pinMode(buttonPin, INPUT_PULLUP);
+
   Serial.println("Starting Wi-Fi Direct (P2P) Client...");
-  
   WiFi.mode(WIFI_MODE_STA);
-  WiFi.begin(ssid);
+  WiFi.begin(ssid, password);
   
   Serial.print("Connecting to Server...");
-  while (/*TODO check if wifi status != connected*/) {
+  while (WiFi.status() != WL_CONNECTED) {
     delay(500);
     Serial.print(".");
   }
+
   Serial.println("\nConnected!");
 
   Serial.print("Client IP Address: ");
-  //TODO print local IP to serial
+  Serial.println(WiFi.localIP());
   
-  if (client.connect(host, port)) {
+  if (client.connect(hostIp, port)) {
     Serial.println("Connected to Server!");
-    client.println("Hello from Client");
+    client.println("Hello from Client"); //sending message to sever
   } else {
     Serial.println("Connection failed.");
   }
@@ -39,15 +43,14 @@ void loop() {
       Serial.println(received);
     }
 
-    // Send a message periodically
-    static unsigned long lastSendTime = 0;
-    if (millis() - lastSendTime > 2000) {
-      lastSendTime = millis();
-      //TODO send message to WIFI server
+    //Click BOOT button to send message xD
+    if (LOW == digitalRead(buttonPin)) {
+      //TODO send your own message to server
+      delay(1000);
     }
   } else {
     Serial.println("Disconnected from server. Reconnecting...");
-    if (client.connect(host, port)) {
+    if (client.connect(hostIp, port)) {
       Serial.println("Reconnected to Server!");
       client.println("Hello again from Client");
     }
