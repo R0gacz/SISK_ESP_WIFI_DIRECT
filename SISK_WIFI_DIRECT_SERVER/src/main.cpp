@@ -9,13 +9,16 @@
 const char* ssid = "TempNetwork";
 const char* password = "sisk2025";
 const int udpPort = 5678;                  // Port UDP serwera
+WiFiUDP udp;
 
-// Konfiguracja servera Wifi P2P
+// Konfiguracja servera Wifi P2P (Access Point)
+const char* ssidAp = "ESP32_P2P_SERVER";
 IPAddress apIP(10, 0, 0, 1);
 IPAddress apGateway(10, 0, 0, 1);
 IPAddress apSubnet(255, 255, 255, 0);
-WiFiUDP udp;
-WiFiServer server(1234); // Lokalny serwer
+WiFiServer server(1234);
+
+
 std::vector<WiFiClient> clients; // Lista lokalnych klientów
 
 void setup() {
@@ -24,7 +27,7 @@ void setup() {
   // Tryb AP + STA
   WiFi.mode(WIFI_MODE_APSTA);
   WiFi.softAPConfig(apIP, apGateway, apSubnet);
-  WiFi.softAP("ESP32_P2P_SERVER", password, 1, 1, 8, false);
+  WiFi.softAP(ssidAp, password, 1, 1, 8, false);
 
   WiFi.begin(ssid, password);
 
